@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Telegram bot tokeni kodga yozilmaydi: GitHub Secret (TG_BOT_TOKEN) yoki
+// lokal gradle.properties / muhit o'zgaruvchisidan olinadi.
+def tgToken = (System.getenv("TG_BOT_TOKEN") ?: (project.findProperty("TG_BOT_TOKEN") ?: "")).toString()
+
+android {
+    namespace 'com.cppuz.kamola'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.cppuz.kamola"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        buildConfigField "String", "TG_BOT_TOKEN", "\"${tgToken}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Oson o'rnatish uchun debug kalit bilan imzolanadi
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.12.0'
+}
